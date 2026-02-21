@@ -27,10 +27,16 @@
     navToggle.classList.remove('active');
     navMenu.classList.remove('open');
     document.body.style.overflow = '';
+    function isLandscapeShort() {
+      return window.matchMedia('(max-height: 500px) and (orientation: landscape)').matches;
+    }
     navToggle.addEventListener('click', function () {
       navToggle.classList.toggle('active');
       navMenu.classList.toggle('open');
-      document.body.style.overflow = navMenu.classList.contains('open') ? 'hidden' : '';
+      // In landscape keep body scrollable so content stays visible
+      if (!isLandscapeShort()) {
+        document.body.style.overflow = navMenu.classList.contains('open') ? 'hidden' : '';
+      }
     });
     navMenu.querySelectorAll('a').forEach(function (link) {
       link.addEventListener('click', function () {
