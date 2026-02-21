@@ -44,7 +44,7 @@
       }
     });
 
-    // One delegated handler for nav links: close menu then scroll after paint (avoids freeze)
+    // One delegated handler for nav links: close menu then scroll
     navMenu.addEventListener('click', function (e) {
       var link = e.target && e.target.closest('a[href^="#"]');
       if (!link) return;
@@ -52,22 +52,21 @@
       if (href === '#') return;
       var targetEl = document.querySelector(href);
       if (!targetEl) return;
+      // Gallery: close menu and let the browser follow the link natively (no preventDefault)
+      if (href === '#gallery') {
+        closeMobileMenu();
+        void navToggle.offsetHeight;
+        return;
+      }
       e.preventDefault();
       e.stopPropagation();
       closeMobileMenu();
-      // Gallery has heavy content (slideshow, images); delay scroll so menu close finishes and UI stays responsive
-      var isGallery = href === '#gallery';
-      if (isGallery) {
-        setTimeout(function () {
-          targetEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }, 380);
-      } else {
+      void navToggle.offsetHeight;
+      requestAnimationFrame(function () {
         requestAnimationFrame(function () {
-          requestAnimationFrame(function () {
-            targetEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
-          });
+          targetEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
         });
-      }
+      });
     });
   }
 
