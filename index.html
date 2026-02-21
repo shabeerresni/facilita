@@ -32,7 +32,6 @@
         <a href="#sectors">Sectors</a>
         <a href="#clients">Clients</a>
         <a href="#sustainability">Sustainability</a>
-        <a href="#gallery">Gallery</a>
         <a href="#contact">Contact</a>
       </nav>
     </div>
@@ -50,10 +49,10 @@
         <a href="#contact" class="btn btn-outline">Contact Us</a>
       </div>
     </div>
-    <div class="scroll-indicator">
+    <button type="button" class="scroll-indicator" aria-label="Scroll to About section">
       <span>Scroll</span>
       <i class="fas fa-chevron-down"></i>
-    </div>
+    </button>
   </section>
 
   <!-- STAT BAR -->
@@ -324,6 +323,31 @@
     </div>
   </section>
 
+  <!-- GALLERY -->
+  <section class="section section-alt" id="gallery">
+    <div class="container">
+      <div class="gallery-wrap">
+        <h2 class="section-title gallery-heading">Gallery</h2>
+        <p class="gallery-subtitle">A glimpse of the properties and projects we manage</p>
+        <div class="gallery-slideshow">
+          <button type="button" class="gallery-btn gallery-prev" aria-label="Previous image">
+            <i class="fas fa-chevron-left"></i>
+          </button>
+          <div class="gallery-stage">
+            <div class="gallery-track" id="galleryTrack">
+              <!-- Slides injected by JS -->
+            </div>
+          </div>
+          <button type="button" class="gallery-btn gallery-next" aria-label="Next image">
+            <i class="fas fa-chevron-right"></i>
+          </button>
+          <div class="gallery-dots" id="galleryDots"></div>
+        </div>
+        <div class="gallery-thumbs" id="galleryThumbs"></div>
+      </div>
+    </div>
+  </section>
+
   <!-- SUSTAINABILITY (Go Green) -->
   <section class="sustainability section" id="sustainability">
     <div class="sustainability-split">
@@ -376,31 +400,6 @@
     </div>
   </section>
 
-  <!-- GALLERY -->
-  <section class="section section-alt" id="gallery">
-    <div class="container">
-      <div class="gallery-wrap">
-        <h2 class="section-title gallery-heading">Gallery</h2>
-        <p class="gallery-subtitle">A glimpse of the properties and projects we manage</p>
-        <div class="gallery-slideshow">
-          <button type="button" class="gallery-btn gallery-prev" aria-label="Previous image">
-            <i class="fas fa-chevron-left"></i>
-          </button>
-          <div class="gallery-stage">
-            <div class="gallery-track" id="galleryTrack">
-              <!-- Slides injected by JS -->
-            </div>
-          </div>
-          <button type="button" class="gallery-btn gallery-next" aria-label="Next image">
-            <i class="fas fa-chevron-right"></i>
-          </button>
-          <div class="gallery-dots" id="galleryDots"></div>
-        </div>
-        <div class="gallery-thumbs" id="galleryThumbs"></div>
-      </div>
-    </div>
-  </section>
-
   <!-- CONTACT -->
   <section class="contact section" id="contact">
     <div class="container contact-grid">
@@ -448,7 +447,6 @@
         <a href="#sectors">Sectors</a>
         <a href="#clients">Clients</a>
         <a href="#sustainability">Sustainability</a>
-        <a href="#gallery">Gallery</a>
         <a href="#contact">Contact</a>
       </nav>
       <p class="footer-copy">&copy; <span id="year"></span> Facilita Firms Management LLC. All rights reserved.</p>

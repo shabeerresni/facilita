@@ -179,6 +179,15 @@
     });
   });
 
+  // ---------- Hero scroll indicator: scroll down to About ----------
+  var scrollIndicator = document.querySelector('.scroll-indicator');
+  if (scrollIndicator) {
+    scrollIndicator.addEventListener('click', function () {
+      var about = document.getElementById('about');
+      if (about) about.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  }
+
   // ---------- Scroll-to-top button ----------
   const scrollTopBtn = document.getElementById('scrollTop');
   if (scrollTopBtn) {
