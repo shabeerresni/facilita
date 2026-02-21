@@ -55,12 +55,19 @@
       e.preventDefault();
       e.stopPropagation();
       closeMobileMenu();
-      // Defer scroll so menu close paints first; reduces jank and freeze on mobile
-      requestAnimationFrame(function () {
-        requestAnimationFrame(function () {
+      // Gallery has heavy content (slideshow, images); delay scroll so menu close finishes and UI stays responsive
+      var isGallery = href === '#gallery';
+      if (isGallery) {
+        setTimeout(function () {
           targetEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 380);
+      } else {
+        requestAnimationFrame(function () {
+          requestAnimationFrame(function () {
+            targetEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          });
         });
-      });
+      }
     });
   }
 

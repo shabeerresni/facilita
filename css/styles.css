@@ -795,13 +795,17 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 }
 
 /* ========== CLIENT GALLERY SLIDESHOW ========== */
+.gallery-scroll-anchor {
+  display: block;
+  height: 0;
+  scroll-margin-top: var(--nav-height);
+}
+.gallery-scroll-anchor:focus { outline: none; }
 .gallery-wrap {
   margin-top: 3.5rem;
   padding-top: 2.5rem;
   border-top: 1px solid rgba(201, 150, 63, 0.2);
-  scroll-margin-top: var(--nav-height);
 }
-#gallery:focus { outline: none; }
 .gallery-heading {
   /* Uses .section-title: same font, size, and gold underline as "Trusted By Leading Names" */
 }
