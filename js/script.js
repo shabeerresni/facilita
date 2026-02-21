@@ -27,22 +27,34 @@
     if (navToggle) navToggle.classList.remove('active');
     if (navMenu) navMenu.classList.remove('open');
     document.body.style.overflow = '';
+    document.documentElement.style.overflow = '';
   }
 
   function isLandscapeShort() {
     return window.matchMedia('(max-height: 500px) and (orientation: landscape)').matches;
   }
 
+  function openOrCloseMenu() {
+    navToggle.classList.toggle('active');
+    navMenu.classList.toggle('open');
+    if (!isLandscapeShort()) {
+      document.body.style.overflow = navMenu.classList.contains('open') ? 'hidden' : '';
+    }
+  }
+
   if (navToggle && navMenu) {
     closeMobileMenu(); // reset on load
 
-    navToggle.addEventListener('click', function () {
-      navToggle.classList.toggle('active');
-      navMenu.classList.toggle('open');
-      if (!isLandscapeShort()) {
-        document.body.style.overflow = navMenu.classList.contains('open') ? 'hidden' : '';
-      }
+    navToggle.addEventListener('click', function (e) {
+      // Ignore click if it was already handled by touchend (avoids double toggle on mobile)
+      if (e.pointerType === 'touch' || (e.sourceCapabilities && e.sourceCapabilities.firesTouchEvents)) return;
+      openOrCloseMenu();
     });
+    // Mobile: handle tap via touchend so menu works after Gallery (click often lost after hash nav)
+    navToggle.addEventListener('touchend', function (e) {
+      e.preventDefault();
+      openOrCloseMenu();
+    }, { passive: false });
 
     // One delegated handler for nav links: close menu then scroll
     navMenu.addEventListener('click', function (e) {
@@ -52,21 +64,31 @@
       if (href === '#') return;
       var targetEl = document.querySelector(href);
       if (!targetEl) return;
-      // Gallery: close menu and let the browser follow the link natively (no preventDefault)
-      if (href === '#gallery') {
-        closeMobileMenu();
-        void navToggle.offsetHeight;
-        return;
-      }
       e.preventDefault();
       e.stopPropagation();
       closeMobileMenu();
       void navToggle.offsetHeight;
-      requestAnimationFrame(function () {
+
+      if (href === '#gallery') {
+        // Delay scroll + cleanup so hamburger keeps working after (no focus trap, no overflow stuck)
+        setTimeout(function () {
+          document.body.style.overflow = '';
+          document.documentElement.style.overflow = '';
+          if (document.activeElement && document.activeElement !== document.body) {
+            document.activeElement.blur();
+          }
+          window.location.hash = 'gallery';
+          setTimeout(function () {
+            if (navToggle) navToggle.focus();
+          }, 100);
+        }, 350);
+      } else {
         requestAnimationFrame(function () {
-          targetEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          requestAnimationFrame(function () {
+            targetEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          });
         });
-      });
+      }
     });
   }
 
