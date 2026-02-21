@@ -55,6 +55,12 @@
       const target = document.querySelector(href);
       if (target) {
         e.preventDefault();
+        // Always close mobile menu when a nav link is clicked (fixes Gallery freeze on mobile)
+        if (navMenu && navMenu.contains(this)) {
+          if (navToggle) navToggle.classList.remove('active');
+          navMenu.classList.remove('open');
+          document.body.style.overflow = '';
+        }
         target.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
     });
