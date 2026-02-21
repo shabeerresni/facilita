@@ -22,45 +22,57 @@
   window.addEventListener('scroll', updateNavbar, { passive: true });
   updateNavbar(); // init
 
-  // ---------- Mobile menu (reset on load so hamburger state is correct after refresh) ----------
-  if (navToggle && navMenu) {
-    navToggle.classList.remove('active');
-    navMenu.classList.remove('open');
+  // ---------- Mobile menu: single close function + delegation for smooth behaviour ----------
+  function closeMobileMenu() {
+    if (navToggle) navToggle.classList.remove('active');
+    if (navMenu) navMenu.classList.remove('open');
     document.body.style.overflow = '';
-    function isLandscapeShort() {
-      return window.matchMedia('(max-height: 500px) and (orientation: landscape)').matches;
-    }
+  }
+
+  function isLandscapeShort() {
+    return window.matchMedia('(max-height: 500px) and (orientation: landscape)').matches;
+  }
+
+  if (navToggle && navMenu) {
+    closeMobileMenu(); // reset on load
+
     navToggle.addEventListener('click', function () {
       navToggle.classList.toggle('active');
       navMenu.classList.toggle('open');
-      // In landscape keep body scrollable so content stays visible
       if (!isLandscapeShort()) {
         document.body.style.overflow = navMenu.classList.contains('open') ? 'hidden' : '';
       }
     });
-    navMenu.querySelectorAll('a').forEach(function (link) {
-      link.addEventListener('click', function () {
-        navToggle.classList.remove('active');
-        navMenu.classList.remove('open');
-        document.body.style.overflow = '';
+
+    // One delegated handler for nav links: close menu then scroll after paint (avoids freeze)
+    navMenu.addEventListener('click', function (e) {
+      var link = e.target && e.target.closest('a[href^="#"]');
+      if (!link) return;
+      var href = link.getAttribute('href');
+      if (href === '#') return;
+      var targetEl = document.querySelector(href);
+      if (!targetEl) return;
+      e.preventDefault();
+      e.stopPropagation();
+      closeMobileMenu();
+      // Defer scroll so menu close paints first; reduces jank and freeze on mobile
+      requestAnimationFrame(function () {
+        requestAnimationFrame(function () {
+          targetEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
       });
     });
   }
 
-  // ---------- Smooth scroll for anchor links ----------
+  // ---------- Smooth scroll for anchor links (outside nav: hero CTA, footer, etc.) ----------
   document.querySelectorAll('a[href^="#"]').forEach(function (anchor) {
+    if (navMenu && navMenu.contains(anchor)) return; // nav links handled above
     anchor.addEventListener('click', function (e) {
-      const href = this.getAttribute('href');
+      var href = this.getAttribute('href');
       if (href === '#') return;
-      const target = document.querySelector(href);
+      var target = document.querySelector(href);
       if (target) {
         e.preventDefault();
-        // Always close mobile menu when a nav link is clicked (fixes Gallery freeze on mobile)
-        if (navMenu && navMenu.contains(this)) {
-          if (navToggle) navToggle.classList.remove('active');
-          navMenu.classList.remove('open');
-          document.body.style.overflow = '';
-        }
         target.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
     });
