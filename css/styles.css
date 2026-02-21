@@ -407,77 +407,81 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   .about-image { order: -1; }
 }
 
-/* ========== CORE VALUES (same look as Go Green) ========== */
-.values {
-  padding: 0;
+/* ========== CORE VALUES (2x2 card grid, current theme) ========== */
+.values-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+.value-card {
+  background: var(--color-white);
+  padding: 2rem;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  transition: transform var(--transition), box-shadow var(--transition);
+  text-align: left;
+}
+.value-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-hover);
+}
+.value-icon {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-gold);
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+.value-card h3 {
+  font-family: var(--font-heading);
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--color-navy);
+  margin: 0 0 0.5rem;
+}
+.value-card p {
+  margin: 0;
+  font-size: 0.95rem;
+  color: #555;
+  line-height: 1.6;
+}
+@media (max-width: 768px) {
+  .values-grid { grid-template-columns: 1fr; }
+}
+
+/* ========== SERVICES (color theme same as Go Green) ========== */
+.services {
   background: linear-gradient(135deg, #0d2d4a 0%, #0A1628 50%);
   color: var(--color-white);
 }
-.values-split {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  min-height: 0;
-}
-.values-left {
-  padding: var(--section-padding) clamp(2rem, 5vw, 4rem);
-}
-.values-left .section-title { color: var(--color-white); }
-.values-left .section-title::after { background: var(--color-gold); }
-.values-intro {
-  font-size: 1.05rem;
-  color: var(--color-text-muted);
-  margin: 1rem 0 2rem;
-  line-height: 1.7;
-}
-.values-features { display: flex; flex-direction: column; gap: 1.5rem; }
-.values-feature {
-  display: flex;
-  gap: 1rem;
-  align-items: flex-start;
-}
-.values-feature i {
-  color: var(--color-gold);
-  font-size: 1.5rem;
-  margin-top: 0.2rem;
-  flex-shrink: 0;
-}
-.values-feature h4 {
-  margin: 0 0 0.35rem;
-  font-size: 1.1rem;
-  color: var(--color-white);
-}
-.values-feature p { margin: 0; font-size: 0.95rem; color: var(--color-text-muted); line-height: 1.6; }
-
-.values-right {
-  background: rgba(0,0,0,0.15);
-  padding: var(--section-padding) clamp(2rem, 5vw, 4rem);
-  border-left: 1px solid rgba(255,255,255,0.08);
-}
-@media (max-width: 768px) {
-  .values-split { grid-template-columns: 1fr; }
-  .values-right { border-left: none; border-top: 1px solid rgba(255,255,255,0.08); }
-}
-
-/* ========== SERVICES ========== */
-.tabs { margin-top: 2rem; }
+.services .section-title { color: var(--color-white); }
+.services .section-title::after { background: var(--color-gold); }
+.services .tabs { margin-top: 2rem; }
 .tab-buttons {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
   margin-bottom: 1.5rem;
-  border-bottom: 2px solid #e0e0e0;
+  border-bottom: 2px solid rgba(255,255,255,0.2);
   padding-bottom: 0;
 }
+.services .tab-buttons { border-bottom-color: rgba(255,255,255,0.2); }
 .tab-btn {
   padding: 0.75rem 1.25rem;
   font-size: 0.9rem;
   font-weight: 500;
-  color: #666;
+  color: rgba(255,255,255,0.8);
   transition: var(--transition);
   border-bottom: 3px solid transparent;
   margin-bottom: -2px;
 }
-.tab-btn:hover { color: var(--color-navy); }
+.services .tab-btn { color: rgba(255,255,255,0.8); }
+.tab-btn:hover { color: var(--color-white); }
+.services .tab-btn:hover { color: var(--color-white); }
 .tab-btn.active {
   color: var(--color-gold);
   border-bottom-color: var(--color-gold);
@@ -500,6 +504,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   font-size: 0.95rem;
   color: var(--color-text-dark);
 }
+.services .service-list li { color: var(--color-text-muted); }
 .service-list li i {
   color: var(--color-gold);
   flex-shrink: 0;
@@ -518,6 +523,10 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   overflow: hidden;
   border: 1px solid #eee;
 }
+.services .service-detail-card {
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.15);
+}
 .service-detail-trigger {
   width: 100%;
   display: flex;
@@ -530,7 +539,9 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   text-align: left;
   transition: var(--transition);
 }
+.services .service-detail-trigger { color: var(--color-white); }
 .service-detail-trigger:hover { background: var(--color-warm-grey); }
+.services .service-detail-trigger:hover { background: rgba(255,255,255,0.12); }
 .service-detail-trigger span { display: flex; align-items: center; gap: 0.5rem; }
 .service-detail-trigger span i { color: var(--color-gold); }
 .service-detail-trigger .fa-plus { transition: transform var(--transition); color: var(--color-gold); }
@@ -546,11 +557,16 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   border-top: 1px solid #eee;
   padding-top: 1rem;
 }
+.services .service-detail-content ul { border-top-color: rgba(255,255,255,0.15); }
 .service-detail-content li {
   padding: 0.35rem 0;
   font-size: 0.9rem;
   color: #555;
   border-bottom: 1px solid #f0f0f0;
+}
+.services .service-detail-content li {
+  color: var(--color-text-muted);
+  border-bottom-color: rgba(255,255,255,0.08);
 }
 .service-detail-content li:last-child { border-bottom: none; }
 @media (max-width: 768px) {
@@ -753,13 +769,11 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   margin-top: 3.5rem;
   padding-top: 2.5rem;
   border-top: 1px solid rgba(201, 150, 63, 0.2);
+  scroll-margin-top: var(--nav-height);
 }
-.gallery-title {
-  font-family: var(--font-heading);
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: var(--color-navy);
-  margin: 0 0 0.35rem;
+#gallery:focus { outline: none; }
+.gallery-heading {
+  /* Uses .section-title: same font, size, and gold underline as "Trusted By Leading Names" */
 }
 .gallery-subtitle {
   font-size: 0.95rem;
@@ -1113,11 +1127,8 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   .sectors-grid { grid-template-columns: 1fr; gap: 1rem; }
   .sector-card { aspect-ratio: 16/10; }
   .sustainability-left,
-  .sustainability-right,
-  .values-left,
-  .values-right { padding: clamp(1.5rem, 4vw, 2rem) 1.25rem; }
-  .sustainability-intro,
-  .values-intro { font-size: 0.95rem; margin: 1rem 0 1.5rem; }
+  .sustainability-right { padding: clamp(1.5rem, 4vw, 2rem) 1.25rem; }
+  .sustainability-intro { font-size: 0.95rem; margin: 1rem 0 1.5rem; }
   .contact-grid { grid-template-columns: 1fr; }
   .contact-form input,
   .contact-form textarea { min-height: 48px; padding: 0.85rem 1rem; }
@@ -1146,7 +1157,6 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   .client-cards { grid-template-columns: 1fr; }
   .client-card { min-width: 0; }
   .gallery-wrap { margin-top: 2.5rem; padding-top: 1.5rem; }
-  .gallery-title { font-size: 1.25rem; }
   .gallery-subtitle { font-size: 0.85rem; margin-bottom: 1rem; }
   .gallery-dots { bottom: 0.75rem; }
   .gallery-dot { width: 6px; height: 6px; }
@@ -1167,7 +1177,6 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 @media (min-width: 769px) and (max-width: 1024px) {
   .nav-menu { gap: 1.5rem; }
   .about-grid { gap: 2.5rem; }
-  .values-split,
   .sustainability-split { grid-template-columns: 1fr 1fr; }
 }
 /* Safe area for notched devices (e.g. iPhone X+) */
