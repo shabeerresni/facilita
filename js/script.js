@@ -22,8 +22,11 @@
   window.addEventListener('scroll', updateNavbar, { passive: true });
   updateNavbar(); // init
 
-  // ---------- Mobile menu ----------
+  // ---------- Mobile menu (reset on load so hamburger state is correct after refresh) ----------
   if (navToggle && navMenu) {
+    navToggle.classList.remove('active');
+    navMenu.classList.remove('open');
+    document.body.style.overflow = '';
     navToggle.addEventListener('click', function () {
       navToggle.classList.toggle('active');
       navMenu.classList.toggle('open');

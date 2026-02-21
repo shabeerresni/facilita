@@ -160,9 +160,11 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 }
 
 @media (max-width: 768px) {
-  .logo-img { height: 72px; max-width: 300px; }
+  .logo-img { height: 58px; max-width: 240px; } /* ~20% smaller on mobile */
+  .logo { min-width: 0; flex-shrink: 1; } /* allow logo to shrink so toggle always fits */
   .nav-toggle {
     display: flex;
+    flex-shrink: 0;
     min-width: 44px;
     min-height: 44px;
     align-items: center;
@@ -1165,6 +1167,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 }
 @media (max-width: 480px) {
   :root { --nav-height: 64px; }
+  .logo-img { height: 46px; max-width: 200px; } /* ~20% smaller than 768px mobile logo */
   .hero-content { padding: var(--nav-height) 0.75rem 2.5rem; }
   .hero-title { font-size: 1.65rem; }
   .stat-bar-inner { padding: 0 1rem; gap: 1.25rem; }
@@ -1184,8 +1187,9 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   .map-wrap { height: 220px; }
   .footer-nav { gap: 1rem; }
 }
-/* Landscape on small screens: compact hero so content fits in view */
+/* Landscape on small screens: compact hero and shorter header for more body space */
 @media (max-height: 500px) and (orientation: landscape) {
+  :root { --nav-height: 52px; }
   .hero { min-height: auto; padding: var(--nav-height) 0 2rem; align-items: center; }
   .hero-content { padding: 1rem 1.5rem 1rem; }
   .hero-title { font-size: 1.5rem; margin-bottom: 0.35rem; }
