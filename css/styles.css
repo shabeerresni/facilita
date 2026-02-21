@@ -587,6 +587,8 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   border-radius: var(--radius);
   overflow: hidden;
   display: block;
+  width: 100%;
+  min-width: 0;
 }
 .sector-bg {
   position: absolute;
@@ -631,8 +633,28 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   .sectors-grid { grid-template-columns: repeat(2, 1fr); }
 }
 @media (max-width: 768px) {
-  .sectors-grid { grid-template-columns: 1fr; aspect-ratio: 16/10; }
-  .sector-card { aspect-ratio: 16/10; }
+  .sectors-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    margin-top: 1.5rem;
+  }
+  .sector-card {
+    aspect-ratio: 16/10;
+    min-height: 180px;
+    width: 100%;
+  }
+  .sector-overlay {
+    padding: 1rem;
+  }
+  .sector-overlay h3 { font-size: 1.15rem; }
+  .sector-overlay p { font-size: 0.8rem; line-height: 1.4; }
+}
+@media (max-width: 480px) {
+  .sectors-grid { gap: 0.75rem; margin-top: 1.25rem; }
+  .sector-card { min-height: 160px; aspect-ratio: 4/3; }
+  .sector-overlay { padding: 0.75rem; }
+  .sector-overlay h3 { font-size: 1.05rem; }
+  .sector-overlay p { font-size: 0.75rem; }
 }
 
 /* ========== SUSTAINABILITY ========== */
@@ -1124,8 +1146,6 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   .tab-buttons { overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; padding-bottom: 2px; }
   .tab-buttons::-webkit-scrollbar { display: none; }
   .tab-btn { flex-shrink: 0; min-height: 44px; padding: 0.65rem 1rem; font-size: 0.85rem; }
-  .sectors-grid { grid-template-columns: 1fr; gap: 1rem; }
-  .sector-card { aspect-ratio: 16/10; }
   .sustainability-left,
   .sustainability-right { padding: clamp(1.5rem, 4vw, 2rem) 1.25rem; }
   .sustainability-intro { font-size: 0.95rem; margin: 1rem 0 1.5rem; }
