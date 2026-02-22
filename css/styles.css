@@ -824,7 +824,42 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   width: 100%;
   max-width: 100%;
 }
+/* Mobile-only collage (replaces slider on portrait) */
+.mobile-collage {
+  display: none;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  padding: 10px 0;
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
+}
+.mobile-collage img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 12px;
+  display: block;
+}
+.mobile-collage img.hero {
+  grid-column: span 2;
+  height: 220px;
+}
+.mobile-collage img.highlight {
+  grid-column: span 2;
+  height: 180px;
+}
+.mobile-collage img:not(.hero):not(.highlight) {
+  height: 120px;
+}
 @media (max-width: 768px) {
+  .mobile-collage {
+    display: grid;
+  }
+  #gallery .gallery-slideshow,
+  #gallery .gallery-thumbs {
+    display: none !important;
+  }
   #gallery .gallery-slideshow { contain: layout paint; }
 }
 .gallery-wrap {
