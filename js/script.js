@@ -303,17 +303,27 @@
       });
     }
 
+    var goToRaf = null;
+    var goToPending = null;
     function goTo(index) {
-      var slides = track.querySelectorAll('.gallery-slide');
-      slides[currentIndex].style.opacity = '0';
-      slides[currentIndex].style.pointerEvents = 'none';
-      currentIndex = (index + total) % total;
-      slides[currentIndex].style.opacity = '1';
-      slides[currentIndex].style.pointerEvents = 'auto';
-      var dots = dotsContainer ? dotsContainer.querySelectorAll('.gallery-dot') : [];
-      var thumbs = thumbsContainer ? thumbsContainer.querySelectorAll('.gallery-thumb') : [];
-      dots.forEach(function (d, i) { d.classList.toggle('active', i === currentIndex); });
-      thumbs.forEach(function (t, i) { t.classList.toggle('active', i === currentIndex); });
+      goToPending = (index + total) % total;
+      if (goToRaf) cancelAnimationFrame(goToRaf);
+      goToRaf = requestAnimationFrame(function () {
+        goToRaf = null;
+        var idx = goToPending;
+        goToPending = null;
+        if (idx === currentIndex) return;
+        var slides = track.querySelectorAll('.gallery-slide');
+        slides[currentIndex].style.opacity = '0';
+        slides[currentIndex].style.pointerEvents = 'none';
+        currentIndex = idx;
+        slides[currentIndex].style.opacity = '1';
+        slides[currentIndex].style.pointerEvents = 'auto';
+        var dots = dotsContainer ? dotsContainer.querySelectorAll('.gallery-dot') : [];
+        var thumbs = thumbsContainer ? thumbsContainer.querySelectorAll('.gallery-thumb') : [];
+        dots.forEach(function (d, i) { d.classList.toggle('active', i === currentIndex); });
+        thumbs.forEach(function (t, i) { t.classList.toggle('active', i === currentIndex); });
+      });
     }
 
     if (prevBtn) prevBtn.addEventListener('click', function () { goTo(currentIndex - 1); });
@@ -337,10 +347,11 @@
 
     var autoplay = null;
     var slideshow = track.closest('.gallery-slideshow');
+    var autoplayInterval = 8000; /* 8s to reduce load, avoid scroll jank */
 
     function startAutoplay() {
       if (autoplay) return;
-      autoplay = setInterval(function () { goTo(currentIndex + 1); }, 5000);
+      autoplay = setInterval(function () { goTo(currentIndex + 1); }, autoplayInterval);
     }
     function stopAutoplay() {
       clearInterval(autoplay);
@@ -355,30 +366,37 @@
       slideshow.addEventListener('touchstart', stopAutoplay, { passive: true });
     }
 
-    // On iOS Safari, animating CSS transform promotes the element to its own
-    // compositor layer which breaks touch routing to position:fixed elements.
-    // Force the navbar and scroll-top onto their own layers BEFORE any gallery
-    // animation runs so the browser never has to re-promote them mid-touch.
     if (navbar) navbar.style.transform = 'translateZ(0)';
     if (scrollTopBtn) scrollTopBtn.style.transform = 'translateZ(0)';
 
-    // Pause autoplay when tab is hidden (saves battery, avoids background repaints)
     document.addEventListener('visibilitychange', function () {
       if (document.hidden) stopAutoplay(); else startAutoplay();
     });
 
-    // Pause autoplay when gallery is out of viewport (fixes mobile stall/hamburger/scroll-top)
+    /* Pause autoplay when gallery out of viewport */
     var gallerySection = document.getElementById('gallery');
     if (gallerySection && typeof IntersectionObserver !== 'undefined') {
       var galleryObserver = new IntersectionObserver(function (entries) {
         entries.forEach(function (entry) {
-          clearInterval(autoplay);
-          if (entry.isIntersecting) {
-            autoplay = setInterval(function () { goTo(currentIndex + 1); }, 5000);
-          }
+          stopAutoplay();
+          if (entry.isIntersecting) startAutoplay();
         });
       }, { threshold: 0.2 });
       galleryObserver.observe(gallerySection);
     }
+
+    /* Pause autoplay during scroll to prevent UI blocking; resume after scroll ends */
+    var scrollResumeTimer = null;
+    window.addEventListener('scroll', function () {
+      stopAutoplay();
+      if (scrollResumeTimer) clearTimeout(scrollResumeTimer);
+      scrollResumeTimer = setTimeout(function () {
+        scrollResumeTimer = null;
+        if (gallerySection) {
+          var rect = gallerySection.getBoundingClientRect();
+          if (rect.top < window.innerHeight && rect.bottom > 0) startAutoplay();
+        }
+      }, 400);
+    }, { passive: true });
   }
 })();
