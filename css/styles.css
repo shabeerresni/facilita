@@ -864,11 +864,13 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   display: flex;
   height: 100%;
   width: 100%;
+  max-width: 100%;
   position: relative;
   touch-action: pan-y;
   will-change: transform;
   backface-visibility: hidden;
   transform: translateZ(0);
+  pointer-events: none;
 }
 .gallery-slide {
   position: absolute;
@@ -876,8 +878,9 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   width: 100%;
   height: 100%;
   min-width: 100%;
+  max-width: 100%;
   flex-shrink: 0;
-  pointer-events: auto;
+  pointer-events: none;
   touch-action: pan-y;
 }
 .gallery-slide img {
@@ -887,6 +890,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   object-fit: cover;
   display: block;
   vertical-align: middle;
+  pointer-events: none;
 }
 .gallery-btn {
   position: absolute;
