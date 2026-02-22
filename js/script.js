@@ -50,11 +50,11 @@
       if (e.pointerType === 'touch' || (e.sourceCapabilities && e.sourceCapabilities.firesTouchEvents)) return;
       openOrCloseMenu();
     });
-    // Mobile: handle tap via touchend so menu works after Gallery (click often lost after hash nav)
-    navToggle.addEventListener('touchend', function (e) {
-      e.preventDefault();
+    navToggle.addEventListener('pointerdown', function (e) {
+      if (e.pointerType !== 'touch') return;
+      e.stopPropagation();
       openOrCloseMenu();
-    }, { passive: false });
+    });
 
     // One delegated handler for nav links: close menu then scroll
     navMenu.addEventListener('click', function (e) {
@@ -263,7 +263,7 @@
     var total = galleryImages.length;
 
     function imageSrc(name) {
-      return encodeURIComponent(name).replace(/%2F/g, '/');
+      return 'images/' + name.replace(/ /g, '%20');
     }
 
     track.style.width = (total * 100) + '%';
@@ -318,10 +318,38 @@
 
     goTo(0); // set initial position
 
+    var touchStartX = 0;
+    var stage = track.closest('.gallery-stage');
+    if (stage) {
+      stage.addEventListener('touchstart', function(e) {
+        touchStartX = e.changedTouches[0].screenX;
+      }, { passive: true });
+      stage.addEventListener('touchend', function(e) {
+        var diff = touchStartX - e.changedTouches[0].screenX;
+        if (Math.abs(diff) > 40) {
+          goTo(currentIndex + (diff > 0 ? 1 : -1));
+        }
+      }, { passive: true });
+    }
+
     var autoplay = setInterval(function () { goTo(currentIndex + 1); }, 5000);
     track.closest('.gallery-slideshow').addEventListener('mouseenter', function () { clearInterval(autoplay); });
     track.closest('.gallery-slideshow').addEventListener('mouseleave', function () {
       autoplay = setInterval(function () { goTo(currentIndex + 1); }, 5000);
     });
+
+    // Pause autoplay when gallery is out of viewport (fixes mobile stall/hamburger/scroll-top)
+    var gallerySection = document.getElementById('gallery');
+    if (gallerySection && typeof IntersectionObserver !== 'undefined') {
+      var galleryObserver = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          clearInterval(autoplay);
+          if (entry.isIntersecting) {
+            autoplay = setInterval(function () { goTo(currentIndex + 1); }, 5000);
+          }
+        });
+      }, { threshold: 0.2 });
+      galleryObserver.observe(gallerySection);
+    }
   }
 })();

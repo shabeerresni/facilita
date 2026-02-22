@@ -815,6 +815,9 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 #gallery {
   scroll-margin-top: var(--nav-height);
 }
+@media (max-width: 768px) {
+  #gallery .gallery-slideshow { contain: layout paint; }
+}
 .gallery-wrap {
   margin-top: 0;
   padding-top: 0;
@@ -847,7 +850,6 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   height: 100%;
   width: 100%;
   transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-  will-change: transform;
 }
 .gallery-slide {
   height: 100%;
@@ -1128,7 +1130,8 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 999;
+  z-index: 9998;
+  isolation: isolate;
   opacity: 0;
   visibility: hidden;
   transform: translateY(10px);
