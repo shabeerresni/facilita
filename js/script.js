@@ -46,14 +46,9 @@
     closeMobileMenu(); // reset on load
 
     navToggle.addEventListener('click', function (e) {
-      // Ignore click if it was already handled by touchend (avoids double toggle on mobile)
-      if (e.pointerType === 'touch' || (e.sourceCapabilities && e.sourceCapabilities.firesTouchEvents)) return;
+      e.stopPropagation();
       openOrCloseMenu();
     });
-    // Touch: use touchend with passive:true (no preventDefault) — avoids iOS touch pipeline poisoning
-    navToggle.addEventListener('touchend', function (e) {
-      openOrCloseMenu();
-    }, { passive: true });
 
     // One delegated handler for nav links: close menu then scroll
     navMenu.addEventListener('click', function (e) {
@@ -69,17 +64,16 @@
       void navToggle.offsetHeight;
 
       if (href === '#gallery') {
-        // Delay scroll + cleanup so hamburger keeps working after (no focus trap, no overflow stuck)
         setTimeout(function () {
           document.body.style.overflow = '';
           document.documentElement.style.overflow = '';
           if (document.activeElement && document.activeElement !== document.body) {
             document.activeElement.blur();
           }
-          window.location.hash = 'gallery';
-          setTimeout(function () {
-            if (navToggle) navToggle.focus();
-          }, 100);
+          var galleryEl = document.getElementById('gallery');
+          if (galleryEl) {
+            galleryEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
         }, 350);
       } else {
         requestAnimationFrame(function () {
@@ -331,10 +325,36 @@
       }, { passive: true });
     }
 
-    var autoplay = setInterval(function () { goTo(currentIndex + 1); }, 5000);
-    track.closest('.gallery-slideshow').addEventListener('mouseenter', function () { clearInterval(autoplay); });
-    track.closest('.gallery-slideshow').addEventListener('mouseleave', function () {
+    var autoplay = null;
+    var slideshow = track.closest('.gallery-slideshow');
+
+    function startAutoplay() {
+      if (autoplay) return;
       autoplay = setInterval(function () { goTo(currentIndex + 1); }, 5000);
+    }
+    function stopAutoplay() {
+      clearInterval(autoplay);
+      autoplay = null;
+    }
+
+    startAutoplay();
+
+    if (slideshow) {
+      slideshow.addEventListener('mouseenter', stopAutoplay);
+      slideshow.addEventListener('mouseleave', startAutoplay);
+      slideshow.addEventListener('touchstart', stopAutoplay, { passive: true });
+    }
+
+    // On iOS Safari, animating CSS transform promotes the element to its own
+    // compositor layer which breaks touch routing to position:fixed elements.
+    // Force the navbar and scroll-top onto their own layers BEFORE any gallery
+    // animation runs so the browser never has to re-promote them mid-touch.
+    if (navbar) navbar.style.transform = 'translateZ(0)';
+    if (scrollTopBtn) scrollTopBtn.style.transform = 'translateZ(0)';
+
+    // Pause autoplay when tab is hidden (saves battery, avoids background repaints)
+    document.addEventListener('visibilitychange', function () {
+      if (document.hidden) stopAutoplay(); else startAutoplay();
     });
 
     // Pause autoplay when gallery is out of viewport (fixes mobile stall/hamburger/scroll-top)
