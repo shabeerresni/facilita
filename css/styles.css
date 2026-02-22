@@ -78,12 +78,12 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   height: var(--nav-height);
   display: flex;
   align-items: center;
-  background: transparent;
-  transition: background var(--transition), box-shadow var(--transition);
+  background: var(--color-white);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  transition: box-shadow var(--transition);
 }
 .navbar.scrolled {
-  background: var(--color-navy);
-  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
 }
 .nav-container {
   width: 100%;
@@ -128,7 +128,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 .nav-menu a {
   font-size: 0.9rem;
   font-weight: 500;
-  color: var(--color-white);
+  color: var(--color-text-dark);
   letter-spacing: 0.03em;
   position: relative;
 }
@@ -154,7 +154,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   display: block;
   width: 24px;
   height: 2px;
-  background: var(--color-white);
+  background: var(--color-text-dark);
   transition: var(--transition);
 }
 .nav-toggle.active span:nth-child(1) {
@@ -183,7 +183,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
     top: var(--nav-height);
     left: 0;
     right: 0;
-    background: var(--color-navy);
+    background: var(--color-white);
     flex-direction: column;
     padding: 1.5rem;
     gap: 0;
@@ -192,7 +192,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
     visibility: hidden;
     pointer-events: none;
     transition: transform var(--transition), opacity var(--transition), visibility var(--transition);
-    box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+    box-shadow: 0 10px 40px rgba(0,0,0,0.1);
     max-height: calc(100vh - var(--nav-height));
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
@@ -223,6 +223,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   justify-content: center;
   text-align: center;
   overflow: hidden;
+  transition: min-height 0.3s ease;
 }
 .hero-bg {
   position: absolute;
@@ -1144,15 +1145,17 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 
 /* ========== FOOTER ========== */
 .footer {
-  background: #060f1a;
-  color: var(--color-text-muted);
-  padding: clamp(2rem, 4vw, 3rem) 1rem;
+  background: var(--color-white);
+  color: var(--color-text-dark);
+  padding: clamp(1.25rem, 3vw, 1.75rem) 1rem;
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+  line-height: 1.4;
 }
 .footer-inner {
   text-align: center;
-  max-width: var(--container-max);
+  max-width: 720px;
   margin: 0 auto;
-  padding: 0 clamp(1rem, 4vw, 2rem);
+  padding: 0 clamp(1rem, 3vw, 1.5rem);
 }
 .footer-brand {
   display: flex;
@@ -1160,31 +1163,33 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   align-items: center;
 }
 .footer-logo-img {
-  height: 54px;
-  max-width: 240px;
-  margin-bottom: 0.5rem;
-  filter: brightness(1.05);
+  height: 48px;
+  max-width: 200px;
+  margin-bottom: 0.35rem;
+  object-fit: contain;
+  object-position: center;
 }
 .footer-tagline {
-  font-size: 0.9rem;
-  margin: 0.5rem 0 1rem;
-  color: rgba(255,255,255,0.6);
+  font-size: 0.85rem;
+  line-height: 1.35;
+  margin: 0.25rem 0 0.5rem;
+  color: rgba(0, 0, 0, 0.6);
 }
 .footer-nav {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 1.5rem;
-  margin-bottom: 1.5rem;
+  gap: 1.25rem;
+  margin-bottom: 0.75rem;
 }
 .footer-nav a {
-  font-size: 0.9rem;
-  color: rgba(255,255,255,0.7);
+  font-size: 0.85rem;
+  color: var(--color-text-dark);
   transition: color var(--transition);
 }
 .footer-nav a:hover { color: var(--color-gold); }
-.footer-copy { font-size: 0.85rem; margin: 0 0 0.5rem; }
-.footer-note { font-size: 0.8rem; color: rgba(255,255,255,0.5); }
+.footer-copy { font-size: 0.8rem; line-height: 1.35; margin: 0 0 0.25rem; color: var(--color-text-dark); }
+.footer-note { font-size: 0.75rem; line-height: 1.35; color: rgba(0, 0, 0, 0.5); }
 .footer-note .heart { color: #c9963f; }
 
 /* ========== SCROLL TO TOP ========== */
@@ -1288,7 +1293,13 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   .gallery-dot { width: 6px; height: 6px; }
   .gallery-dot.active { width: 18px; }
   .map-wrap { height: 220px; }
-  .footer-nav { gap: 1rem; }
+  .footer-inner { max-width: 100%; padding: 0 1rem; }
+  .footer-logo-img { height: 44px; max-width: 180px; margin-bottom: 0.25rem; }
+  .footer-tagline { font-size: 0.8rem; margin: 0.2rem 0 0.4rem; }
+  .footer-nav { gap: 1rem; margin-bottom: 0.5rem; }
+  .footer-nav a { font-size: 0.8rem; }
+  .footer-copy { font-size: 0.75rem; }
+  .footer-note { font-size: 0.7rem; }
 }
 /* Landscape on small screens: compact hero, shorter header, menu must not fill screen */
 @media (max-height: 500px) and (orientation: landscape) {
