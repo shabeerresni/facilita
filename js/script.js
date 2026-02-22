@@ -259,11 +259,17 @@
       return 'images/' + name.replace(/ /g, '%20');
     }
 
-    track.style.width = (total * 100) + '%';
+    track.style.width = '100%';
+    track.style.position = 'relative';
     galleryImages.forEach(function (name, i) {
       var slide = document.createElement('div');
       slide.className = 'gallery-slide';
-      slide.style.flex = '0 0 ' + (100 / total) + '%';
+      slide.style.flex = 'none';
+      slide.style.position = 'absolute';
+      slide.style.inset = '0';
+      slide.style.opacity = i === 0 ? '1' : '0';
+      slide.style.transition = 'opacity 0.5s ease';
+      slide.style.pointerEvents = i === 0 ? 'auto' : 'none';
       var img = document.createElement('img');
       img.src = imageSrc(name);
       img.alt = 'Client reference ' + (i + 1);
@@ -298,8 +304,12 @@
     }
 
     function goTo(index) {
+      var slides = track.querySelectorAll('.gallery-slide');
+      slides[currentIndex].style.opacity = '0';
+      slides[currentIndex].style.pointerEvents = 'none';
       currentIndex = (index + total) % total;
-      track.style.transform = 'translateX(-' + (currentIndex * 100 / total) + '%)';
+      slides[currentIndex].style.opacity = '1';
+      slides[currentIndex].style.pointerEvents = 'auto';
       var dots = dotsContainer ? dotsContainer.querySelectorAll('.gallery-dot') : [];
       var thumbs = thumbsContainer ? thumbsContainer.querySelectorAll('.gallery-thumb') : [];
       dots.forEach(function (d, i) { d.classList.toggle('active', i === currentIndex); });
