@@ -763,12 +763,21 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 }
 
 /* ========== CLIENTS ========== */
+#clients .container {
+  overflow-x: hidden;
+  width: 100%;
+  max-width: 100%;
+}
 .clients-wrapper {
   margin-top: 2rem;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 2.5rem 3rem;
+  gap: 2.5rem 2rem;
   align-items: start;
+  min-width: 0;
+}
+.client-category {
+  min-width: 0;
 }
 .client-category h4 {
   font-size: 0.75rem;
@@ -782,12 +791,13 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 }
 .client-cards {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-  gap: 0.65rem;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 0.6rem;
+  min-width: 0;
 }
 .client-card {
   background: var(--color-white);
-  padding: 0.75rem 1rem;
+  padding: 0.7rem 0.9rem;
   border-radius: var(--radius);
   font-size: 0.9rem;
   font-weight: 500;
@@ -797,6 +807,9 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   transition: var(--transition);
   text-align: left;
   line-height: 1.35;
+  min-width: 0;
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 .client-card:hover {
   border-color: var(--color-gold);
@@ -805,17 +818,22 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
 }
 @media (max-width: 900px) {
-  .clients-wrapper { grid-template-columns: 1fr; }
+  .clients-wrapper { grid-template-columns: 1fr; gap: 2rem; }
 }
 @media (max-width: 768px) {
+  .clients-wrapper { gap: 1.75rem; }
   .client-cards {
-    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-    gap: 0.6rem;
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 0.55rem;
   }
-  .client-card { font-size: 0.85rem; padding: 0.65rem 0.9rem; }
+  .client-card { font-size: 0.85rem; padding: 0.6rem 0.85rem; }
+}
+@media (max-width: 480px) {
+  .client-cards { grid-template-columns: 1fr; gap: 0.5rem; }
+  .client-card { padding: 0.6rem 0.8rem; font-size: 0.85rem; }
 }
 @media (max-width: 400px) {
-  .client-cards { grid-template-columns: 1fr; }
+  .clients-wrapper { gap: 1.5rem; }
 }
 
 /* ========== CLIENT GALLERY SLIDESHOW ========== */
@@ -1054,6 +1072,11 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   color: var(--color-gold);
   width: 20px;
   text-align: center;
+}
+.contact-details li.contact-line {
+  white-space: nowrap;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
 .map-wrap {
   position: relative;
