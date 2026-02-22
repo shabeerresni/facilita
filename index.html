@@ -423,9 +423,11 @@
         </div>
       </div>
       <div class="contact-form-wrap" data-aos="fade-left" data-aos-duration="800">
-        <form class="contact-form" id="contactForm">
+        <!-- Replace YOUR_FORM_ID below with your Formspree form ID from formspree.io -->
+        <form class="contact-form" id="contactForm" action="https://formspree.io/f/xvzbwbnd" method="POST">
           <input type="text" name="name" placeholder="Your Name" required>
           <input type="email" name="email" placeholder="Your Email" required>
+          <input type="hidden" name="_subject" value="New enquiry from facilitafirms.com">
           <input type="text" name="subject" placeholder="Subject">
           <textarea name="message" placeholder="Message" rows="5" required></textarea>
           <button type="submit" class="btn btn-gold btn-block">Send Message</button>

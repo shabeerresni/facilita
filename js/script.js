@@ -204,25 +204,42 @@
   const yearEl = document.getElementById('year');
   if (yearEl) yearEl.textContent = new Date().getFullYear();
 
-  // ---------- Contact form ----------
+  // ---------- Contact form (Formspree) ----------
   const contactForm = document.getElementById('contactForm');
   if (contactForm) {
     contactForm.addEventListener('submit', function (e) {
       e.preventDefault();
-      var btn = this.querySelector('button[type="submit"]');
-      var originalText = btn ? btn.textContent : 'Send';
+      var form = this;
+      var btn = form.querySelector('button[type="submit"]');
+      var originalText = btn ? btn.textContent : 'Send Message';
       if (btn) {
         btn.disabled = true;
         btn.textContent = 'Sending…';
       }
-      setTimeout(function () {
-        if (btn) {
-          btn.textContent = 'Message Sent';
-          btn.disabled = false;
-          setTimeout(function () { btn.textContent = originalText; }, 3000);
-        }
-        contactForm.reset();
-      }, 800);
+      fetch(form.action, {
+        method: 'POST',
+        body: new FormData(form),
+        headers: { Accept: 'application/json' }
+      })
+        .then(function (r) {
+          if (r.ok) {
+            if (btn) {
+              btn.textContent = 'Message Sent';
+              btn.disabled = false;
+              setTimeout(function () { btn.textContent = originalText; }, 3000);
+            }
+            form.reset();
+          } else {
+            throw new Error('Submit failed');
+          }
+        })
+        .catch(function () {
+          if (btn) {
+            btn.textContent = 'Failed — try again';
+            btn.disabled = false;
+            setTimeout(function () { btn.textContent = originalText; }, 3000);
+          }
+        });
     });
   }
 
