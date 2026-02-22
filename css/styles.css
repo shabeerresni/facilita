@@ -35,6 +35,7 @@
 html {
   scroll-behavior: smooth;
   -webkit-text-size-adjust: 100%;
+  overflow-x: hidden;
 }
 body {
   margin: 0;
@@ -68,7 +69,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   top: 0;
   left: 0;
   right: 0;
-  z-index: 1000;
+  z-index: 9999;
   height: var(--nav-height);
   display: flex;
   align-items: center;
@@ -842,8 +843,10 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 .gallery-stage {
   position: relative;
   width: 100%;
+  max-width: 100%;
   aspect-ratio: 16/10;
   overflow: hidden;
+  contain: layout;
 }
 .gallery-track {
   display: flex;
@@ -1192,12 +1195,10 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   .contact-form textarea { min-height: 120px; }
   .contact-form button[type="submit"] { min-height: 48px; }
   .scroll-top {
-    bottom: 1.25rem;
+    bottom: max(1.25rem, env(safe-area-inset-bottom));
     right: 1.25rem;
     width: 44px;
     height: 44px;
-    bottom: max(1.25rem, env(safe-area-inset-bottom));
-    right: max(1.25rem, env(safe-area-inset-right));
   }
 }
 @media (max-width: 480px) {

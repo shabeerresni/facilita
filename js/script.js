@@ -256,7 +256,7 @@
     var total = galleryImages.length;
 
     function imageSrc(name) {
-      return encodeURIComponent(name).replace(/%2F/g, '/');
+      return 'images/' + name.replace(/ /g, '%20');
     }
 
     track.style.width = (total * 100) + '%';
