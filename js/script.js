@@ -50,11 +50,10 @@
       if (e.pointerType === 'touch' || (e.sourceCapabilities && e.sourceCapabilities.firesTouchEvents)) return;
       openOrCloseMenu();
     });
-    navToggle.addEventListener('pointerdown', function (e) {
-      if (e.pointerType !== 'touch') return;
-      e.stopPropagation();
+    // Touch: use touchend with passive:true (no preventDefault) — avoids iOS touch pipeline poisoning
+    navToggle.addEventListener('touchend', function (e) {
       openOrCloseMenu();
-    });
+    }, { passive: true });
 
     // One delegated handler for nav links: close menu then scroll
     navMenu.addEventListener('click', function (e) {
