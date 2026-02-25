@@ -863,15 +863,11 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   border-radius: 12px;
   display: block;
 }
-.mobile-collage img.hero {
-  grid-column: span 2;
-  height: 83px;
-}
 .mobile-collage img.highlight {
   grid-column: span 2;
   height: 180px;
 }
-.mobile-collage img:not(.hero):not(.highlight) {
+.mobile-collage img:not(.highlight) {
   height: 120px;
 }
 @media (max-width: 768px) {
@@ -884,10 +880,6 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   }
   #gallery .gallery-slideshow { contain: layout paint; }
 }
-/* Portrait only: enforce hero height */
-@media (max-width: 768px) and (orientation: portrait) {
-  .mobile-collage img.hero { height: 83px !important; }
-}
 /* Gallery collage: landscape adjustments — uniform 10px gaps, no extra padding */
 @media (max-width: 768px) and (orientation: landscape) {
   /* Tighten heading + subtitle spacing above the gallery grid */
@@ -897,14 +889,13 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   .mobile-collage {
     gap: 10px;
     padding: 0;
-    /* Lock every row height so gaps are identical throughout */
-    grid-template-rows: 330px repeat(2, 120px) 180px repeat(5, 120px);
+    /* 8 rows: 2 regular, 1 highlight, 5 regular */
+    grid-template-rows: repeat(2, 120px) 180px repeat(5, 120px);
     align-items: stretch;
   }
   .mobile-collage img { height: 100%; }
-  .mobile-collage img.hero { height: 100%; }
   .mobile-collage img.highlight { height: 100%; }
-  .mobile-collage img:not(.hero):not(.highlight) { height: 100%; }
+  .mobile-collage img:not(.highlight) { height: 100%; }
 }
 .gallery-wrap {
   margin-top: 0;
