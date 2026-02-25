@@ -199,9 +199,80 @@
 
   // ---------- Contact form (Formspree) ----------
   const contactForm = document.getElementById('contactForm');
+  const contactFormError = document.getElementById('contactFormError');
+  const ackPopup = document.getElementById('ackPopup');
+  const ackPopupClose = ackPopup ? ackPopup.querySelector('.ack-popup__close') : null;
+  const ackPopupOverlay = ackPopup ? ackPopup.querySelector('.ack-popup__overlay') : null;
+
+  function showAckPopup() {
+    if (!ackPopup) return;
+    ackPopup.removeAttribute('hidden');
+    document.body.style.overflow = 'hidden';
+    var closeBtn = ackPopup.querySelector('.ack-popup__close');
+    if (closeBtn) closeBtn.focus();
+  }
+
+  function hideAckPopup() {
+    if (!ackPopup) return;
+    ackPopup.setAttribute('hidden', '');
+    document.body.style.overflow = '';
+  }
+
+  if (ackPopupClose) ackPopupClose.addEventListener('click', hideAckPopup);
+  if (ackPopupOverlay) ackPopupOverlay.addEventListener('click', hideAckPopup);
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && ackPopup && !ackPopup.hasAttribute('hidden')) hideAckPopup();
+  });
+
   if (contactForm) {
+    var requiredFields = [
+      { id: 'contactName', name: 'Name' },
+      { id: 'contactEmail', name: 'Email' },
+      { id: 'contactSubject', name: 'Subject' },
+      { id: 'contactMessage', name: 'Message' }
+    ];
+
+    function clearError() {
+      if (contactFormError) {
+        contactFormError.textContent = '';
+        contactFormError.classList.remove('visible');
+      }
+      requiredFields.forEach(function (f) {
+        var el = document.getElementById(f.id);
+        if (el) el.classList.remove('contact-form-touched');
+      });
+    }
+
+    function showError(msg) {
+      if (contactFormError) {
+        contactFormError.textContent = msg;
+        contactFormError.classList.add('visible');
+      }
+    }
+
     contactForm.addEventListener('submit', function (e) {
       e.preventDefault();
+      clearError();
+
+      var firstInvalid = null;
+      var missing = [];
+      requiredFields.forEach(function (f) {
+        var el = document.getElementById(f.id);
+        if (!el) return;
+        el.classList.add('contact-form-touched');
+        var val = (el.value || '').trim();
+        if (!val) {
+          missing.push(f.name);
+          if (!firstInvalid) firstInvalid = el;
+        }
+      });
+
+      if (missing.length > 0) {
+        showError('Please fill in all fields so we can get back to you.');
+        if (firstInvalid) firstInvalid.focus();
+        return;
+      }
+
       var form = this;
       var btn = form.querySelector('button[type="submit"]');
       var originalText = btn ? btn.textContent : 'Send Message';
@@ -219,9 +290,11 @@
             if (btn) {
               btn.textContent = 'Message Sent';
               btn.disabled = false;
-              setTimeout(function () { btn.textContent = originalText; }, 3000);
+              setTimeout(function () { btn.textContent = originalText; }, 2000);
             }
             form.reset();
+            clearError();
+            showAckPopup();
           } else {
             throw new Error('Submit failed');
           }
@@ -232,7 +305,16 @@
             btn.disabled = false;
             setTimeout(function () { btn.textContent = originalText; }, 3000);
           }
+          showError('Something went wrong. Please try again or call us on the contact number.');
         });
+    });
+
+    requiredFields.forEach(function (f) {
+      var el = document.getElementById(f.id);
+      if (el) {
+        el.addEventListener('input', clearError);
+        el.addEventListener('blur', function () { this.classList.add('contact-form-touched'); });
+      }
     });
   }
 

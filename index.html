@@ -478,12 +478,13 @@
       </div>
       <div class="contact-form-wrap" data-aos="fade-left" data-aos-duration="800">
         <!-- Replace YOUR_FORM_ID below with your Formspree form ID from formspree.io -->
-        <form class="contact-form" id="contactForm" action="https://formspree.io/f/xvzbwbnd" method="POST">
-          <input type="text" name="name" placeholder="Your Name" required>
-          <input type="email" name="email" placeholder="Your Email" required>
+        <form class="contact-form" id="contactForm" action="https://formspree.io/f/xvzbwbnd" method="POST" novalidate>
+          <input type="text" name="name" id="contactName" placeholder="Your Name" required aria-required="true" aria-describedby="contactFormError">
+          <input type="email" name="email" id="contactEmail" placeholder="Your Email" required aria-required="true" aria-describedby="contactFormError">
           <input type="hidden" name="_subject" value="New enquiry from facilitafirms.com">
-          <input type="text" name="subject" placeholder="Subject">
-          <textarea name="message" placeholder="Message" rows="5" required></textarea>
+          <input type="text" name="subject" id="contactSubject" placeholder="Subject" required aria-required="true" aria-describedby="contactFormError">
+          <textarea name="message" id="contactMessage" placeholder="Message" rows="5" required aria-required="true" aria-describedby="contactFormError"></textarea>
+          <p class="contact-form-error" id="contactFormError" role="alert" aria-live="polite"></p>
           <button type="submit" class="btn btn-gold btn-block">Send Message</button>
         </form>
       </div>
@@ -508,6 +509,16 @@
       <p class="footer-copy">&copy; <span id="year"></span> Facilita Firms Management Services LLC. All rights reserved.</p>
     </div>
   </footer>
+
+  <!-- Acknowledgement popup after successful form submit -->
+  <div id="ackPopup" class="ack-popup" role="dialog" aria-modal="true" aria-labelledby="ackPopupTitle" aria-describedby="ackPopupText" hidden>
+    <div class="ack-popup__overlay" tabindex="-1"></div>
+    <div class="ack-popup__box">
+      <h3 id="ackPopupTitle" class="ack-popup__title">Thank you</h3>
+      <p id="ackPopupText" class="ack-popup__text">Received your Message. We will get back to you soon. Please call on the Contact number for anything urgent.</p>
+      <button type="button" class="btn btn-gold ack-popup__close">OK</button>
+    </div>
+  </div>
 
   <button class="scroll-top" id="scrollTop" aria-label="Scroll to top">
     <i class="fas fa-chevron-up"></i>
