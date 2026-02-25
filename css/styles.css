@@ -865,7 +865,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 }
 .mobile-collage img.hero {
   grid-column: span 2;
-  height: 220px;
+  height: 83px;
 }
 .mobile-collage img.highlight {
   grid-column: span 2;
@@ -883,6 +883,28 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
     display: none !important;
   }
   #gallery .gallery-slideshow { contain: layout paint; }
+}
+/* Portrait only: enforce hero height */
+@media (max-width: 768px) and (orientation: portrait) {
+  .mobile-collage img.hero { height: 83px !important; }
+}
+/* Gallery collage: landscape adjustments — uniform 10px gaps, no extra padding */
+@media (max-width: 768px) and (orientation: landscape) {
+  /* Tighten heading + subtitle spacing above the gallery grid */
+  #gallery.section { padding-top: 1rem; padding-bottom: 1rem; }
+  #gallery .section-title { margin-bottom: 0.15rem; }
+  #gallery .gallery-subtitle { margin-bottom: 0.5rem; font-size: 0.8rem; }
+  .mobile-collage {
+    gap: 10px;
+    padding: 0;
+    /* Lock every row height so gaps are identical throughout */
+    grid-template-rows: 330px repeat(2, 120px) 180px repeat(5, 120px);
+    align-items: stretch;
+  }
+  .mobile-collage img { height: 100%; }
+  .mobile-collage img.hero { height: 100%; }
+  .mobile-collage img.highlight { height: 100%; }
+  .mobile-collage img:not(.hero):not(.highlight) { height: 100%; }
 }
 .gallery-wrap {
   margin-top: 0;
@@ -1405,8 +1427,10 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   .contact-details li { line-height: 1.5; }
 }
 /* Landscape on small screens: compact hero, shorter header, menu must not fill screen */
-@media (max-height: 500px) and (orientation: landscape) {
+@media (max-height: 600px) and (orientation: landscape) {
   :root { --nav-height: 52px; }
+  /* Shrink logo to fit inside the shorter 52px landscape header */
+  .logo-img { height: 38px !important; max-width: 180px !important; }
   /* Force mobile hamburger layout so menu works and doesn’t take full width */
   .nav-toggle {
     display: flex !important;
@@ -1422,32 +1446,37 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
     left: 0 !important;
     right: 0 !important;
     flex-direction: column !important;
-    padding: 1rem !important;
+    padding: 0.75rem 1.25rem !important;
     gap: 0 !important;
-    transform: translateY(-100%);
-    opacity: 0;
-    visibility: hidden;
+    z-index: 99998 !important;
+    transform: translateY(-110%) !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
     pointer-events: none !important;
-    transition: transform var(--transition), opacity var(--transition), visibility var(--transition);
-    box-shadow: 0 10px 40px rgba(0,0,0,0.3);
-    /* Cap height so body stays visible and page can scroll when menu is closed */
-    max-height: min(55vh, 220px) !important;
+    transition: transform var(--transition), opacity var(--transition), visibility var(--transition) !important;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+    /* Cap height so body stays visible when menu is open */
+    max-height: min(55vh, 240px) !important;
     overflow-y: auto !important;
     -webkit-overflow-scrolling: touch;
-    background: var(--color-navy);
+    background: var(--color-white) !important;
   }
   .nav-menu.open {
-    transform: translateY(0);
-    opacity: 1;
-    visibility: visible;
+    transform: translateY(0) !important;
+    opacity: 1 !important;
+    visibility: visible !important;
     pointer-events: auto !important;
   }
   .nav-menu a {
     display: flex !important;
     align-items: center;
-    padding: 0.6rem 0;
+    padding: 0.65rem 0 !important;
     min-height: 40px;
+    color: var(--color-text-dark) !important;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+    font-size: 0.9rem !important;
   }
+  .nav-menu a:last-child { border-bottom: none; }
   .hero { min-height: auto; padding: var(--nav-height) 0 2rem; align-items: center; }
   .hero-content { padding: 1rem 1.5rem 1rem; }
   .hero-title { font-size: 1.5rem; margin-bottom: 0.35rem; }
