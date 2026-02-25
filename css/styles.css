@@ -884,7 +884,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 @media (max-width: 768px) and (orientation: landscape) {
   /* Tighten heading + subtitle spacing above the gallery grid */
   #gallery.section { padding-top: 1rem; padding-bottom: 1rem; }
-  #gallery .section-title { margin-bottom: 0.15rem; }
+  #gallery .section-title { margin-bottom: 1.5rem; }
   #gallery .gallery-subtitle { margin-bottom: 0.5rem; font-size: 0.8rem; }
   .mobile-collage {
     gap: 10px;
