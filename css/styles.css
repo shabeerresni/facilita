@@ -1357,11 +1357,44 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 .footer-note { font-size: 0.75rem; line-height: 1.35; color: rgba(0, 0, 0, 0.5); }
 .footer-note .heart { color: #c9963f; }
 
+/* ========== WHATSAPP FLOAT ========== */
+.whatsapp-float {
+  position: fixed;
+  bottom: max(1.25rem, env(safe-area-inset-bottom));
+  right: max(1.25rem, env(safe-area-inset-right));
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: #25D366;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.75rem;
+  z-index: 9999;
+  isolation: isolate;
+  box-shadow: 0 6px 20px rgba(37, 211, 102, 0.4);
+  transition: transform var(--transition), box-shadow var(--transition), background var(--transition);
+  text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.whatsapp-float:hover,
+.whatsapp-float:focus-visible {
+  background: #1ebe57;
+  color: #fff;
+  transform: translateY(-3px);
+  box-shadow: 0 8px 28px rgba(37, 211, 102, 0.5);
+  outline: none;
+}
+.whatsapp-float:focus-visible {
+  box-shadow: 0 0 0 2px var(--color-white), 0 0 0 4px #25D366, 0 8px 28px rgba(37, 211, 102, 0.5);
+}
+
 /* ========== SCROLL TO TOP ========== */
 .scroll-top {
   position: fixed;
-  bottom: 2rem;
-  right: 2rem;
+  bottom: calc(max(1.25rem, env(safe-area-inset-bottom)) + 68px);
+  right: max(1.25rem, env(safe-area-inset-right));
   width: 48px;
   height: 48px;
   border-radius: 50%;
@@ -1436,10 +1469,15 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   .contact-form textarea { min-height: 120px; }
   .contact-form button[type="submit"] { min-height: 48px; font-size: 1rem; }
   .scroll-top {
-    bottom: max(1.25rem, env(safe-area-inset-bottom));
-    right: 1.25rem;
+    bottom: calc(max(1.25rem, env(safe-area-inset-bottom)) + 64px);
+    right: max(1.25rem, env(safe-area-inset-right));
     width: 44px;
     height: 44px;
+  }
+  .whatsapp-float {
+    width: 52px;
+    height: 52px;
+    font-size: 1.6rem;
   }
 }
 @media (max-width: 480px) {
